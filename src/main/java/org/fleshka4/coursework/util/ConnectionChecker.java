@@ -6,7 +6,8 @@ import java.sql.SQLException;
 
 public class ConnectionChecker {
     public static void main(String[] args) {
-        try(final Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "password")) {
+        try(final Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres",
+                "postgres", "password")) {
             if (connection.isValid(1)) {
                 System.out.println("Connected successfully");
             }
