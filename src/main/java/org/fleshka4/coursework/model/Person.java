@@ -1,9 +1,11 @@
 package org.fleshka4.coursework.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "people")
+@Table(name = "people", schema = "hospital")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +21,13 @@ public class Person {
     @Column(name = "middlename", length = 20)
     private String middleName;
 
-    @ManyToOne
+    @JsonIgnoreProperties("people")
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "diagnosisid")
     private Diagnosis diagnosisId;
 
-    @ManyToOne
+    @JsonIgnoreProperties("people")
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "wardid")
     private Ward wardId;
 
@@ -81,5 +85,17 @@ public class Person {
 
     public void setWardId(Ward wardId) {
         this.wardId = wardId;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", diagnosisId=" + diagnosisId +
+                ", wardId=" + wardId +
+                '}';
     }
 }

@@ -5,11 +5,12 @@ import org.fleshka4.coursework.model.Ward;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public interface WardService {
-    boolean createWard(String name, Integer maxCount);
+    Ward createWard(Ward ward);
+
+    Ward createWard(String name, Integer maxCount);
 
     boolean existsByName(String name);
 
@@ -17,9 +18,9 @@ public interface WardService {
 
     List<Ward> listWardsWithDiagnosis(Diagnosis diagnosis);
 
-    Optional<Ward> findWard(Integer id);
+    Ward findWard(Integer id);
 
     List<Ward> findByMaxCountGreaterThan(Integer maxCount);
 
-    boolean deleteWardById(Integer id);
+    void deleteWardById(Integer id);
 }

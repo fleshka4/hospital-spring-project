@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "diagnosis")
+@Table(name = "diagnosis", schema = "hospital")
 public class Diagnosis {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +14,7 @@ public class Diagnosis {
     @Column(name = "name", length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "diagnosisId")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diagnosisId", cascade = CascadeType.MERGE)
     private Collection<Person> people;
 
     public Diagnosis() {}
@@ -45,5 +45,14 @@ public class Diagnosis {
 
     public void setPeople(Collection<Person> people) {
         this.people = people;
+    }
+
+    @Override
+    public String toString() {
+        return "Diagnosis{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", people=" + people +
+                '}';
     }
 }

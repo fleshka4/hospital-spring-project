@@ -13,7 +13,8 @@ public interface DiagnosisRepository extends CrudRepository<Diagnosis, Integer> 
     @Query("select (count(d) > 0) from Diagnosis d where ?1=d.name")
     boolean existsByName(String name);
 
-    @Query("select distinct Diagnosis from Diagnosis d left join Person p left join Ward" +
-            " where ?1=p.wardId and d=p.diagnosisId")
-    List<Diagnosis> listDiagnosesinWard(Ward ward);
+    @Query("select distinct d from Diagnosis d left join Person p on d=p.diagnosisId" +
+            " left join Ward on ?1=p.wardId" +
+            " where d=p.diagnosisId and ?1=p.wardId")
+    List<Diagnosis> listDiagnosesInWard(Ward ward);
 }
