@@ -13,7 +13,8 @@ public interface WardRepository extends CrudRepository<Ward, Integer> {
     @Query("select w from Ward w where w.maxCount > ?1")
     List<Ward> findByMaxCountGreaterThan(Integer maxCount);
 
-    @Query("select distinct Ward from Ward w left join Person p left join Diagnosis" +
+    @Query("select distinct w from Ward w left join Person p on w=p.wardId" +
+            " left join Diagnosis on ?1=p.diagnosisId" +
             " where w=p.wardId and ?1=p.diagnosisId")
     List<Ward> listWardsWithDiagnosis(Diagnosis diagnosis);
 

@@ -4,21 +4,34 @@ import org.fleshka4.coursework.model.Diagnosis;
 import org.fleshka4.coursework.model.Ward;
 import org.fleshka4.coursework.repository.WardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@ComponentScan({"org.fleshka4.coursework.repository"})
 public class WardServiceImpl implements WardService{
     @Autowired
     WardRepository wardRepository;
 
     @Override
-    public boolean createWard(String name, Integer maxCount) {
-        if (!wardRepository.existsByName(name)) {
-            wardRepository.save(new Ward(name, maxCount));
-            return true;
+    public Ward createWard(Ward ward) {
+        if (!wardRepository.existsByName(ward.getName())) {
+            return wardRepository.save(ward);
         }
-        return false;
+        throw new EntityExistsException("Ward already exists");
+    }
+
+    @Override
+    public Ward createWard(String name, Integer maxCount) {
+        if (!wardRepository.existsByName(name)) {
+            return wardRepository.save(new Ward(name, maxCount));
+        }
+        throw new EntityExistsException("Ward already exists");
     }
 
     @Override
@@ -37,8 +50,12 @@ public class WardServiceImpl implements WardService{
     }
 
     @Override
-    public Optional<Ward> findWard(Integer id) {
-        return wardRepository.findById(id);
+    public Ward findWard(Integer id) {
+        final Optional<Ward> ward = wardRepository.findById(id);
+        if (ward.isEmpty()) {
+            throw new EntityNotFoundException("Ward not found");
+        }
+        return ward.get();
     }
 
     @Override
@@ -47,10 +64,10 @@ public class WardServiceImpl implements WardService{
     }
 
     @Override
-    public boolean deleteWardById(Integer id) {
-        if (wardRepository.existsById(id)) {
-            wardRepository.deleteById(id);
+    public void deleteWardById(Integer id) {
+        if (!wardRepository.existsById(id)) {
+            throw new EntityNotFoundException("Ward not found");
         }
-        return false;
+        wardRepository.deleteById(id);
     }
 }

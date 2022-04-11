@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "wards")
+@Table(name = "wards", schema = "hospital")
 public class Ward {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class Ward {
     @Column(name = "maxcount")
     private Integer maxCount;
 
-    @OneToMany(mappedBy = "wardId")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "wardId", cascade = CascadeType.MERGE)
     private Collection<Person> people;
 
     public Ward() {}
@@ -57,5 +57,15 @@ public class Ward {
 
     public void setPeople(Collection<Person> people) {
         this.people = people;
+    }
+
+    @Override
+    public String toString() {
+        return "Ward{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", maxCount=" + maxCount +
+                ", people=" + people +
+                '}';
     }
 }
