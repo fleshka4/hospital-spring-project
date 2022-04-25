@@ -5,7 +5,6 @@ import org.fleshka4.coursework.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -66,11 +65,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("DOCTOR", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/roles/").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/people/**", "/api/wards/**", "/api/diagnoses/**")
-                .hasAnyRole("DOCTOR", "ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/people/**", "/api/wards/**", "/api/diagnoses/**")
-                .hasAnyRole("DOCTOR", "ADMIN")
-                .anyRequest().permitAll()
+                .antMatchers(HttpMethod.GET, "/api/people/**", "/api/wards/**", "/api/diagnoses/**")
+                .permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfigurer(provider));
     }
