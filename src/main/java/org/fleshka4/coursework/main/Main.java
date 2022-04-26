@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"org.fleshka4.coursework.controller", "org.fleshka4.coursework.service"})
+@ComponentScan({"org.fleshka4.coursework.controller", "org.fleshka4.coursework.service", "org.fleshka4.coursework.main"})
 @EntityScan("org.fleshka4.coursework.model")
 @EnableJpaRepositories("org.fleshka4.coursework.repository")
 public class Main {
