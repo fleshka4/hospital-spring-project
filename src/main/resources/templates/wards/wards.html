@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Wards</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container text-center">
+    <div>
+        <h1>List of all wards</h1>
+    </div>
+    <div>
+        <table class="table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Max count</th>
+                <th>People</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ward: ${wardList}">
+                <td th:text="${ward.id}">ID</td>
+                <td th:text="${ward.name}">Name</td>
+                <td th:text="${ward.maxCount}">Max count</td>
+                <td><a th:href="@{wards/{id}(id=${ward.id})}" th:text="${ward.people.size()}">Number of people </a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <a sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')" th:href="@{wards/add}"> Add new ward</a>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>

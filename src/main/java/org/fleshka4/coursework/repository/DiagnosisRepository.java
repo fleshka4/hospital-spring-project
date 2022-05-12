@@ -7,9 +7,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DiagnosisRepository extends CrudRepository<Diagnosis, Integer> {
+    Optional<Diagnosis> findByName(String name);
     @Query("select (count(d) > 0) from Diagnosis d where ?1=d.name")
     boolean existsByName(String name);
 

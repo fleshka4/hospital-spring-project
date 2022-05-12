@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Ward info</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css"/>
+</head>
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container text-center">
+    <div>
+        <h1 th:text="|People in ${ward.getName()} ward|"/>
+    </div>
+    <div>
+        <table class="table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>First name</th>
+                <th>Middle name</th>
+                <th>Last name</th>
+                <th>Diagnosis</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="person: ${people}">
+                <td th:text="${person.id}">ID</td>
+                <td th:text="${person.firstName}">First name</td>
+                <td th:text="${person.middleName}">Middle name</td>
+                <td th:text="${person.lastName}">Last name</td>
+                <td><a th:href="@{/diagnoses/{id}(id=${person.diagnosisId.id})}"
+                       th:text="${person.diagnosisId.getName()}">Diagnosis</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>

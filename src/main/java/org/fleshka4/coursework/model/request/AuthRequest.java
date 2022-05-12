@@ -10,13 +10,11 @@ public class AuthRequest implements Serializable {
     private String password;
     private String role;
 
-    private final String prefix = "ROLE_";
-
     @JsonCreator
     public AuthRequest(String username, String password, String role) {
         this.username = username;
         this.password = password;
-        this.role = prefix + role.toUpperCase(Locale.ROOT);
+        this.role = role.toUpperCase(Locale.ROOT);
     }
 
     public String getUsername() {
@@ -40,6 +38,6 @@ public class AuthRequest implements Serializable {
     }
 
     public void setRole(String role) {
-        this.role = prefix + role.toUpperCase(Locale.ROOT);
+        this.role = role.toUpperCase(Locale.ROOT);
     }
 }

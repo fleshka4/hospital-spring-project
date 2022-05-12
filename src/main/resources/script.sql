@@ -1,4 +1,4 @@
--- CREATE SCHEMA HOSPITAL
+CREATE SCHEMA HOSPITAL
 
 CREATE TABLE Diagnosis
 (
@@ -24,12 +24,15 @@ CREATE TABLE People
     FOREIGN KEY (DiagnosisID) REFERENCES Diagnosis (ID),
     FOREIGN KEY (WardID) REFERENCES Wards (ID)
 );
+
 DROP TABLE Users;
+
 CREATE TABLE Users
 (
     ID SERIAL NOT NULL PRIMARY KEY UNIQUE,
     username VARCHAR NOT NULL UNIQUE,
-    password VARCHAR
+    password VARCHAR,
+    user_role_id INTEGER
 );
 
 CREATE TABLE user_roles

@@ -7,9 +7,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WardRepository extends CrudRepository<Ward, Integer> {
+    Optional<Ward> findByName(String name);
     @Query("select w from Ward w where w.maxCount > ?1")
     List<Ward> findByMaxCountGreaterThan(Integer maxCount);
 

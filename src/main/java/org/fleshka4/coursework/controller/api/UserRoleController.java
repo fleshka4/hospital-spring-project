@@ -28,6 +28,7 @@ public class UserRoleController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Role already exists");
         }
 
+        userRole.setRole("ROLE_" + userRole.getRole().toUpperCase());
         return userRoleRepository.save(userRole);
     }
 }

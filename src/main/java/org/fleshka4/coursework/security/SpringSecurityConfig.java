@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -54,19 +53,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
+        http.httpBasic().and()
                 .csrf().disable()
-                .formLogin().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .formLogin().loginPage("/login").permitAll()
+                .and()
+                .logout().logoutUrl("/logout")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
+                .antMatchers("/login", "/api/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/users").hasAnyRole("DOCTOR", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/people/**", "diagnoses/**", "/wards/**")
+                .hasAnyRole("DOCTOR", "ADMIN")
+                .antMatchers().permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("DOCTOR", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/users/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/roles/").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/people/**", "/api/wards/**", "/api/diagnoses/**")
-                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/roles/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/people/**", "/api/wards/**", "/api/diagnoses/**")
                 .hasAnyRole("DOCTOR", "ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/api/people/**", "/api/wards/**", "/api/diagnoses/**")

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -38,12 +39,13 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists");
         }
 
-        if (userRoleRepository.findByRoleIgnoreCase(authRequest.getRole()).isPresent()) {
+        final Optional<UserRole> role = userRoleRepository.findByRoleIgnoreCase("ROLE_" + authRequest.getRole().toUpperCase());
+        if (role.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "To create role use /api/users/roles/add url instead");
+                    "To create role use /api/roles/add url instead");
         }
 
         return userRepository.save(new User(authRequest.getUsername(), passwordEncoder.encode(authRequest.getPassword()),
-                new UserRole(authRequest.getRole())));
+                role.get()));
     }
 }

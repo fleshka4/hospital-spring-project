@@ -2,6 +2,7 @@ package org.fleshka4.coursework.controller.api;
 
 
 import org.fleshka4.coursework.model.Person;
+import org.fleshka4.coursework.model.Ward;
 import org.fleshka4.coursework.service.DiagnosisService;
 import org.fleshka4.coursework.service.PersonService;
 import org.fleshka4.coursework.service.WardService;
@@ -102,7 +103,11 @@ public class PersonController {
     @PatchMapping("/{id}/ward/{wardId}")
     public ResponseEntity<Person> updateWardId(@PathVariable("id") Integer id, @PathVariable("wardId") Integer wardId) {
         try {
-            personService.updateWardIdById(wardService.findWard(wardId), id);
+            final Ward ward = wardService.findWard(wardId);
+            if (ward.getMaxCount() <= ward.getPeople().size()) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Ward is full");
+            }
+            personService.updateWardIdById(ward, id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
