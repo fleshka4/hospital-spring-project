@@ -1,6 +1,6 @@
-package org.fleshka4.coursework.controller;
+package org.fleshka4.coursework.controller.api;
 
-import org.fleshka4.coursework.model.Diagnosis;
+import org.fleshka4.coursework.model.Ward;
 import org.fleshka4.coursework.service.DiagnosisService;
 import org.fleshka4.coursework.service.WardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,60 +17,66 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/diagnoses")
-public class DiagnosisController {
+@RequestMapping("/api/wards")
+public class WardController {
     @Autowired
-    DiagnosisService diagnosisService;
+    private WardService wardService;
 
     @Autowired
-    WardService wardService;
+    private DiagnosisService diagnosisService;
 
     @GetMapping
-    public ResponseEntity<List<Diagnosis>> getAllDiagnoses() {
-        return new ResponseEntity<>(diagnosisService.listDiagnoses(), HttpStatus.OK);
+    public ResponseEntity<List<Ward>> getAllWards() {
+        return new ResponseEntity<>(wardService.listWards(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Diagnosis> getDiagnosisById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Ward> getWardById(@PathVariable("id") Integer id) {
         try {
-            return new ResponseEntity<>(diagnosisService.findDiagnosis(id), HttpStatus.OK);
+            return new ResponseEntity<>(wardService.findWard(id), HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
-    @GetMapping("/ward/{id}")
-    public ResponseEntity<List<Diagnosis>> getDiagnosesInWard(@PathVariable("id") Integer id) {
+    @GetMapping("/diagnosis/{id}")
+    public ResponseEntity<List<Ward>> getWardsWithDiagnosis(@PathVariable("id") Integer id) {
         try {
-            return new ResponseEntity<>(diagnosisService.listDiagnosesInWard(wardService.findWard(id)), HttpStatus.OK);
+            return new ResponseEntity<>(wardService.listWardsWithDiagnosis(diagnosisService.findDiagnosis(id)),
+                    HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
+    }
+
+    @GetMapping("/greater/{number}")
+    public ResponseEntity<List<Ward>> getWardsByMaxCountGreaterThan(@PathVariable("number") Integer number) {
+        return new ResponseEntity<>(wardService.findByMaxCountGreaterThan(number), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Diagnosis createDiagnosis(@RequestBody Diagnosis diagnosis) {
+    public Ward createWard(@RequestBody Ward ward) {
         try {
-            return diagnosisService.createDiagnosis(diagnosis);
+            return wardService.createWard(ward);
         } catch (EntityExistsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
     @PostMapping(value = "/addwith", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Diagnosis createDiagnosis(@RequestParam String name) {
+    public Ward createWard(@RequestParam String name, @RequestParam Integer maxcount) {
         try {
-            return diagnosisService.createDiagnosis(name);
+            return wardService.createWard(name, maxcount);
         } catch (EntityExistsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteDiagnosisById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Map<String, Boolean>> deleteWardById(@PathVariable("id") Integer id) {
         try {
-            diagnosisService.deleteDiagnosisById(id);
+            wardService.deleteWardById(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

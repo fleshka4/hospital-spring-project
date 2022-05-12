@@ -1,4 +1,4 @@
-package org.fleshka4.coursework.controller;
+package org.fleshka4.coursework.controller.api;
 
 import org.fleshka4.coursework.model.User;
 import org.fleshka4.coursework.repository.UserRepository;
@@ -23,19 +23,19 @@ import java.util.Map;
 @ComponentScan("org.fleshka4.coursework.security")
 public class AuthController {
     @Autowired
-    AuthenticationManager manager;
+    private AuthenticationManager manager;
 
     @Autowired
-    JwtTokenProvider provider;
+    private JwtTokenProvider provider;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/api/login")
-    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthRequest authRequest) {//TODO save salt to the table and check
+    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthRequest authRequest) {
         try {
             final String name = authRequest.getUsername();
             final User user = userRepository.findByUsernameIgnoreCase(name)

@@ -1,4 +1,4 @@
-package org.fleshka4.coursework.controller;
+package org.fleshka4.coursework.controller.api;
 
 
 import org.fleshka4.coursework.model.Person;
