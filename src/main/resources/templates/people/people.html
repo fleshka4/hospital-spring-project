@@ -43,6 +43,7 @@
     </div>
     <br>
     <a sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')" th:href="@{/people/add}"> Add new person</a>
+    <a sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')" th:href="@{/people/delete_form}"> Delete person</a>
 </div>
 
 <div th:insert="blocks/footer :: footer"></div>

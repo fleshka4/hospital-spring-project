@@ -3,7 +3,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Register ward</title>
+    <title>Delete person</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css"/>
 </head>
@@ -13,28 +13,21 @@
 
 <div class="container text-center">
     <div>
-        <h1>New ward</h1>
+        <h1>Delete person</h1>
     </div>
-    <form th:action="@{/wards/add}" method="post"
+    <form th:action="@{/people/delete}" method="get"
           style="max-width: 600px; margin: 0 auto;"
-          th:object="${ward}">
+            th:object="${id}">
         <div class="m-3">
             <div class="form-group row">
-                <label class="col-form-label col-4">Name</label>
+                <label class="col-form-label col-4">Id</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" th:field="*{name}" required/>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="col-form-label col-4">Max count</label>
-                <div class="col-8">
-                    <input type="number" class="form-control" th:field="*{maxCount}" required min="0"/>
+                    <input type="number" class="form-control" th:field="*{id}" required min="0"/>
                 </div>
             </div>
 
             <div>
-                <button type="submit" class="btn btn-primary">Add ward</button>
+                <button type="submit" id="delBut" class="btn btn-primary">Delete person</button>
             </div>
         </div>
     </form>
