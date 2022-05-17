@@ -101,7 +101,7 @@ public class UIController {
     public String showDiagnosis(@PathVariable("id") Integer id, final Model model) {
         final Optional<Diagnosis> diagnosis = diagnosisRepository.findById(id);
         if (diagnosis.isEmpty()) {
-            return "/blocks/not_found";
+            return "/diagnoses/not_found";
         }
         model.addAttribute("diagnosis", diagnosis.get());
         model.addAttribute("people", diagnosis.get().getPeople());
@@ -112,7 +112,7 @@ public class UIController {
     public String showWard(@PathVariable("id") Integer id, final Model model) {
         final Optional<Ward> ward = wardRepository.findById(id);
         if (ward.isEmpty()) {
-            return "/blocks/not_found";
+            return "/wards/not_found";
         }
         model.addAttribute("ward", ward.get());
         model.addAttribute("people", ward.get().getPeople());
@@ -132,16 +132,16 @@ public class UIController {
     public String processPersonRegistration(final Person person, final DiagAndWardRequest diagAndWardRequest) {
         if (!personRepository.findPeopleByFullName(person.getFirstName(), person.getLastName(),
                 person.getMiddleName()).isEmpty()) {
-            return "/blocks/already_exists";
+            return "/people/already_exists";
         }
         final Optional<Diagnosis> diagnosis = diagnosisRepository.findByName(diagAndWardRequest.getDiagnosisName());
         if (diagnosis.isEmpty()) {
-            return "/blocks/not_found";
+            return "/diagnoses/not_found";
         }
         person.setDiagnosisId(diagnosis.get());
         final Optional<Ward> ward = wardRepository.findByName(diagAndWardRequest.getWardName());
         if (ward.isEmpty()) {
-            return "/blocks/not_found";
+            return "/wards/not_found";
         }
         if (ward.get().getMaxCount() <= ward.get().getPeople().size()) {
             return "wards/full";
@@ -160,7 +160,7 @@ public class UIController {
     @PostMapping("/diagnoses/add")
     public String processDiagnosisRegistration(final Diagnosis diagnosis) {
         if (diagnosisRepository.existsByName(diagnosis.getName())) {
-            return "/blocks/already_exists";
+            return "/diagnoses/already_exists";
         }
         diagnosisRepository.save(diagnosis);
         return "/diagnoses/diagnoses";
@@ -175,7 +175,7 @@ public class UIController {
     @PostMapping("/wards/add")
     public String processWardRegistration(final Ward ward) {
         if (wardRepository.existsByName(ward.getName())) {
-            return "/blocks/already_exists";
+            return "/wards/already_exists";
         }
         wardRepository.save(ward);
         return "/wards/wards";
@@ -192,7 +192,7 @@ public class UIController {
         if (personRepository.existsById(delRequest.getId())) {
             personRepository.deleteById(delRequest.getId());
         } else {
-            return "/blocks/not_found";
+            return "/people/not_found";
         }
         return "/people/people";
     }
