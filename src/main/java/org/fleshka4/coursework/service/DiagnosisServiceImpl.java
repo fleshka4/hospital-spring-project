@@ -16,7 +16,7 @@ import java.util.Optional;
 @ComponentScan({"org.fleshka4.coursework.repository"})
 public class DiagnosisServiceImpl implements DiagnosisService{
     @Autowired
-    DiagnosisRepository diagnosisRepository;
+    private DiagnosisRepository diagnosisRepository;
 
     @Override
     public Diagnosis createDiagnosis(Diagnosis diagnosis) {

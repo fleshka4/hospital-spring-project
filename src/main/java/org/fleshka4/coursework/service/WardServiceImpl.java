@@ -16,7 +16,7 @@ import java.util.Optional;
 @ComponentScan({"org.fleshka4.coursework.repository"})
 public class WardServiceImpl implements WardService{
     @Autowired
-    WardRepository wardRepository;
+    private WardRepository wardRepository;
 
     @Override
     public Ward createWard(Ward ward) {

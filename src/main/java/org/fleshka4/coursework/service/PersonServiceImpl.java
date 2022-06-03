@@ -17,7 +17,7 @@ import java.util.Optional;
 @ComponentScan({"org.fleshka4.coursework.repository"})
 public class PersonServiceImpl implements PersonService{
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Override
     public Person createPerson(Person person) {

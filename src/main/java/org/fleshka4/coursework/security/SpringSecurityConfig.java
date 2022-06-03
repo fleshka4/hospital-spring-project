@@ -21,7 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    JwtTokenProvider provider;
+    private JwtTokenProvider provider;
 
     @Qualifier("customUserDetailsService")
     @Autowired

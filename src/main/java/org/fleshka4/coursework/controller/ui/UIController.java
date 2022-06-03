@@ -123,8 +123,6 @@ public class UIController {
     public String showPersonRegistration(final Model model) {
         model.addAttribute("person", new Person());
         model.addAttribute("diagAndWard", new DiagAndWardRequest());
-        model.addAttribute("diagnoses", diagnosisRepository.findAll());
-        model.addAttribute("wards", wardRepository.findAll());
         return "/people/new_person";
     }
 

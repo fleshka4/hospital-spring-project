@@ -22,8 +22,6 @@ import java.util.Map;
 @RestController
 @ComponentScan("org.fleshka4.coursework.security")
 public class AuthController {
-    @Autowired
-    private AuthenticationManager manager;
 
     @Autowired
     private JwtTokenProvider provider;
